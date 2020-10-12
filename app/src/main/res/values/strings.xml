@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">ExoPlayerDemo</string>
+    <string name="goToDefaultStreaming">Default streaming</string>
+    <string name="goToCustomStreaming">Custom streaming</string>
 </resources>

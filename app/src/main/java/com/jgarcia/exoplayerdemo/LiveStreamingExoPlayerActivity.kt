@@ -1,6 +1,7 @@
 package com.jgarcia.exoplayerdemo
 
 import android.app.PictureInPictureParams
+import android.content.Intent
 import android.content.pm.ActivityInfo
 import android.content.res.Configuration
 import android.graphics.Point
@@ -46,6 +47,11 @@ class LiveStreamingExoPlayerActivity : AppCompatActivity() {
         activityLiveStreamingExoPlayerBinding = ActivityLiveStreamingExoPlayerBinding.inflate(layoutInflater)
         setContentView(activityLiveStreamingExoPlayerBinding.root)
         setListeners()
+        startStreaming()
+    }
+
+    override fun onNewIntent(intent: Intent?) {
+        super.onNewIntent(intent)
         startStreaming()
     }
 
@@ -100,8 +106,6 @@ class LiveStreamingExoPlayerActivity : AppCompatActivity() {
         activityLiveStreamingExoPlayerBinding.playerView.player = exoPlayer
         // keep screen on
         activityLiveStreamingExoPlayerBinding.playerView.keepScreenOn = true
-        // set when is ready
-        exoPlayer.playWhenReady = true
         // mediaSource
         mediaSource = when (Util.inferContentType(Uri.parse(LIVE_STREAMING))) {
             C.TYPE_DASH -> DashMediaSource.Factory(dataSource)
@@ -139,8 +143,13 @@ class LiveStreamingExoPlayerActivity : AppCompatActivity() {
         }
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
-        exoPlayer.release()
+    override fun onResume() {
+        super.onResume()
+        exoPlayer.play()
+    }
+
+    override fun onStop() {
+        super.onStop()
+        exoPlayer.stop()
     }
 }
